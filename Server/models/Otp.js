@@ -18,7 +18,7 @@ const OTPSchema = new mongoose.Schema({
 });
 
 //a function -> to send emails
-//written after the schema and before the model
+//written after the schema and before the model 
 
 async function sendVerificationEmail(email, otp) {
   try {
@@ -29,7 +29,7 @@ async function sendVerificationEmail(email, otp) {
     );
     console.log("Email Sent Successfully: ", mailResponse);
   } catch (error) {
-    console.log("error occured while sending mail: ", error);
+    console.log("error occurred while sending mail: ", error);
     throw error;
   }
 }
