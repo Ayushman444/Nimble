@@ -1,7 +1,8 @@
 const User = require("../models/User");
 const mailSender = require("../utils/mailSender");
+const bcrypt = require("bcrypt");
 
-//reset Password Token
+//reset Password Token mail sender
 exports.resetPasswordToken = async (req, res) => {
   try {
     //get email from the request body
@@ -45,10 +46,60 @@ exports.resetPasswordToken = async (req, res) => {
   } catch (e) {
     console.log(e);
     return res.status(500).json({
-        success:false,
-        message:"Something went wrong while sending the reset password mail"
-    })
+      success: false,
+      message: "Something went wrong while sending the reset password mail",
+    });
   }
 };
 
 //reset Password Update in DB
+exports.resetPassword = async (req, res) => {
+  try {
+    //data fetch
+    const { password, confirmPassword, token } = req.body; //frontend sent the token in body already
+
+    //validation
+    if (password !== confirmPassword) {
+      return res.json({
+        success: false,
+        message: "Password is not matching with confirm password.",
+      });
+    }
+    //get userDetails from db using token
+    const userDetails = await User.findOne({ token: token });
+    //if no entry then invalid token
+    if (!userDetails) {
+      return res.json({
+        success: false,
+        message: "Token is invalid",
+      });
+    }
+    //if token time expired check
+    if (userDetails.resetPasswordExpires < Date.now()) {
+      return res.json({
+        success: false,
+        message: "Reset password link has expired",
+      });
+    }
+    //hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    //update the password
+    await User.findOneAndUpdate(
+      { token: token },
+      { password: hashedPassword },
+      { new: true }
+    );
+
+    //return response
+    return res.status(200).json({
+      success: true,
+      message: "Reset password successfull",
+    });
+  } catch (e) {
+      console.log(e);
+      return res.status(500).json({
+        success:false,
+        message:"Cannot change the password , something went wrong in reset password controller , please try again."
+      })
+  }
+};
