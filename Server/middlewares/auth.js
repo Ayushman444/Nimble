@@ -21,7 +21,7 @@ exports.auth = async (req, res, next) => {
 
     //verify the token
     try{
-      const decode = await jwt.verify(token, process.env.JWT_SECRET)
+      const decode = jwt.verify(token, process.env.JWT_SECRET)
       console.log(decode);
       req.user = decode;
     }catch(e){
@@ -42,8 +42,53 @@ exports.auth = async (req, res, next) => {
 
 //isStudent
 exports.isStudent = async (req,res,next) =>{
-  
+  try{
+    if(req.user.accountType !== "Student"){
+      return res.status(401).json({
+        success:false,
+        message:"This is protected route for students only."
+      })
+    }
+    next();
+  }catch(e){
+    return res.status(500).json({
+      success:false,
+      message:"User cannot be verified , please try again."
+    })
+  }
 }
 //inInstructor
+exports.isInstructor = async (req,res,next) =>{
+  try{
+    if(req.user.accountType !== "Instructor"){
+      return res.status(401).json({
+        success:false,
+        message:"This is protected route for instructors only."
+      })
+    }
+    next();
+  }catch(e){
+    return res.status(500).json({
+      success:false,
+      message:"User cannot be verified , please try again."
+    })
+  }
+}
 
 //isAdmin
+exports.isAdmin = async (req,res,next) =>{
+  try{
+    if(req.user.accountType !== "Admin"){
+      return res.status(401).json({
+        success:false,
+        message:"This is protected route for Admins only."
+      })
+    }
+    next();
+  }catch(e){
+    return res.status(500).json({
+      success:false,
+      message:"User cannot be verified , please try again."
+    })
+  }
+}
