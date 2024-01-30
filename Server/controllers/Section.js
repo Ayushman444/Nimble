@@ -58,8 +58,8 @@ exports.updateSection = async (req,res)=>{
 
         const Section = await Section.findByIdAndUpdate(sectionId, {sectionName}, {new:true});
 
-        //return respinse
-        return res.status(200).json({
+        //return response
+        return res.status(200).json({ 
             success:true,
             message:"Section name updated successfully"
         })
@@ -67,6 +67,29 @@ exports.updateSection = async (req,res)=>{
         return res.status(500).json({
             success:false,
             message:"Some error in the update section controller function",
+            error:error.message,
+        })
+    }
+}
+
+exports.deleteSection = async(req,res) =>{
+    try{
+        //get the id 
+        const {sectionId} = req.params;
+
+        //validation
+        
+        //find by id and delete
+        await Section.findByIdAndDelete(sectionId);
+        //return response
+        return res.status(200).json({
+            success:true,
+            message:"Section deleted successfully"
+        })
+    }catch(e){
+        return res.status(500).json({
+            success:false,
+            message:"Some error in the delete section controller function",
             error:error.message,
         })
     }
