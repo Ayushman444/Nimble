@@ -36,9 +36,13 @@ const courseSchema = new mongoose.Schema({
   thumbnail: {
     type: String,
   },
-  tag: {
+  tag:{
+    type:[String],
+    required:true,
+  },
+  category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Tag",
+    ref: "Category",
   },
   studentsEnrolled: [
     {
@@ -47,6 +51,17 @@ const courseSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  instructions:{
+    type:[String],
+  },
+  status:{
+    type: String,
+    enum:["Draft","Published"],
+  },
+  createdAt:{
+    type:Date,
+    default:Date.now,
+  },
 });
 
 //model name and schema name
