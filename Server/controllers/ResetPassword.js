@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const mailSender = require("../utils/mailSender");
 const bcrypt = require("bcrypt");
-
+const crypto = require("crypto");
 //reset Password Token mail sender
 exports.resetPasswordToken = async (req, res) => {
   try {
@@ -42,6 +42,7 @@ exports.resetPasswordToken = async (req, res) => {
       success: true,
       message:
         "Email sent successfully, please check email and change password.",
+        token,
     });
   } catch (e) {
     console.log(e);

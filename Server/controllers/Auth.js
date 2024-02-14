@@ -9,62 +9,55 @@ const { passwordUpdated } = require("../mail/templates/passwordUpdate");
 require("dotenv").config();
 
 //send OTP
-exports.sendOTP = async (req, res) => {
+exports.sendOTP = async (req, res) =>  {
+
   try {
-    //fetch the email
-    const { email } = req.body;
+      const {email} = req.body;                                     //fetch email from request ki body
+      const checkUserPresent = await User.findOne({email});        //check if user already exist
 
-    //check that user already exists or not
-    const checkUserPresent = await User.findOne({ email });
+      if(checkUserPresent) {                                      //if user already exist , then return a response
+          return res.status(401).json({
+              success:false,
+              message:'User already registered',
+          })
+      }
 
-    //if exists
-    if (checkUserPresent) {
-      return res.status(401).json({
-        success: false,
-        message:
-          "User account already registered, create new account with new email or login with existing account.",
+      var otp = otpGenerator.generate(6, {                       //generate otp of 6 digit number donot contain uppercase,lowercase,specialchar; 
+          upperCaseAlphabets:false,
+          lowerCaseAlphabets:false,
+          specialChars:false,
       });
-    }
+      console.log("OTP generated: ", otp );
 
-    //generate OTP
-    var otp = otpGenerator.generate(6, {
+      let result = await OTP.findOne({otp: otp});               //check unique otp or not
+      while(result){                                            // if result is true so we regenerate otp;
+          otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
-      lowerCaseAlphabets: false,
-      specialChars: false,
     });
+      }
 
-    // make sure the otp is unique
-    let result = await OTP.findOne({ otp: otp });
+      const otpPayload = {email, otp};
 
-    while (result) {
-      otp = otpGenerator.generate(6, {
-        upperCaseAlphabets: false,
-        lowerCaseAlphabets: false,
-        specialChars: false,
-      });
-      result = await OTP.findOne({ otp: otp });
-    }
+      //create an entry in OTP in DB and this OTP is used in SignUp to find response;
+      const otpBody = await OTP.create(otpPayload);
+      console.log("OTP Body", otpBody);
 
-    const otpPayLoad = { email, otp };
-
-    //create an entry for OTP
-    const otpBody = await OTP.create(otpPayLoad);
-    console.log(otpBody);
-
-    //return response successful
-    res.status(200).json({
-      success: true,
-      message: "OTP sent successfully",
-      otp,
-    });
-  } catch (e) {
-    console.log(e);
-    return res.status(500).json({
-      success: false,
-      message: e.message,
-    });
+      res.status(200).json({                                     //return response successful
+          success:true,
+          message:'OTP Sent Successfully',
+          otp,
+      })
   }
+  catch(error) {
+      console.log(error);
+      return res.status(500).json({
+          success:false,
+          message:error.message,
+      })
+  }
+
 };
+
 
 //signup controller
 exports.signUp = async (req, res) => {
@@ -103,7 +96,7 @@ exports.signUp = async (req, res) => {
       });
     }
 
-    if (!password !== confirmPassword) {
+    if (password !== confirmPassword) {
       return res.status(400).json({
         success: false,
         message: "Psw and confirm Psw do not match.",
@@ -155,6 +148,7 @@ exports.signUp = async (req, res) => {
       email,
       contactNumber,
       password: hashedPassword,
+   
       accountType,
       additionalDetails: profileDetails._id,
       image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
@@ -169,7 +163,7 @@ exports.signUp = async (req, res) => {
     console.log(e);
     return res.status(500).json({
       success: false,
-      message: "User cannot be registered. Please try again",
+      message: e.message,
     });
   }
 };

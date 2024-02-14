@@ -1,5 +1,9 @@
 const Profile = require("../models/Profile");
 const User = require("../models/User");
+const CourseProgress = require("../models/CourseProgress")
+const Course = require("../models/Course")
+const { uploadImageToCloudinary } = require("../utils/imageUploader")
+// const { convertSecondsToDuration } = require("../utils/secToDuration")
 
 exports.updateProfile = async (req, res) => {
   try {
@@ -9,7 +13,7 @@ exports.updateProfile = async (req, res) => {
     //get userID
     const id = req.user.id;
     //validation
-    if (!id || !contactNumber || !gender) {
+    if (!id || !contactNumber ) {
       return res
         .status(400)
         .json({
@@ -86,11 +90,14 @@ exports.getAllUserDetails = async(req,res)=>{
         return res.status(200).json({
             success:true,
             message:"User data fetched successfully",
+            userDetails,
         })
     }catch(e){
+      
         return res.status(500).json({
             success:false,
             message:error.message,
+            
         })
     }
 }
@@ -191,9 +198,11 @@ exports.updateDisplayPicture = async (req, res) => {
     })
   } 
   catch (error) {
+    console.log("here")
     return res.status(500).json({
       success: false,
       message: error.message,
+      
     })
   }
 }

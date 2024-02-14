@@ -1,30 +1,31 @@
 const nodemailer = require("nodemailer");
 
-const mailSender = async (email, title, body) => {
-  try {
-    //creating a transporter using nodemailer
+const mailSender = async (email, title, body) => {                            // with the help of this function we send mail of otp;      
+    try{
+            let transporter = nodemailer.createTransport({                    // we send mail with the help of transporter and here MAIL_USER , MAIL_PASS contain app password of that email which send email 
+                service:'gmail',
+                port:465,
+                secure:true,
+                host:process.env.MAIL_HOST,                               
+                auth:{
+                    user: process.env.MAIL_USER,                           
+                    pass: process.env.MAIL_PASS,
+                }
+            })
 
-    let transporter = nodemailer.createTransport({
-      host: process.env.MAIL_HOST, //smtp in case of gmail
-      auth: {
-        user: process.env.MAIL_USER, // email of sender
-        pass: process.env.MAIL_PASS, // app password
-      },
-    });
+            let info = await transporter.sendMail({
+                from: 'Nimble',
+                to:`${email}`,
+                subject: `${title}`,
+                html: `${body}`,
+            })
+            console.log(info);
+            return info;
+    }
+    catch(error) {
+        console.log(error.message);
+    }
+}
 
-    let info = await transporter.sendMail({
-      from: "Nimble",
-      to: `${email}`,
-      subject: `${title}`,
-      html: `${body}`,
-    });
-
-    console.log(info);
-    return info;
-
-  } catch (error) {
-    console.log(error.message);
-  }
-};
 
 module.exports = mailSender;
