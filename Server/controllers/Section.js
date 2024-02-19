@@ -10,11 +10,11 @@ exports.createSection = async(req,res) =>{
         //return response
 
         //data fetch
-        const {sectionName, courseID} = req.body; // we will send the course ID we will send as the course is already created 
+        const {sectionName, courseId} = req.body; // we will send the course ID we will send as the course is already created 
 
 
         //data validation
-        if(!sectionName || !courseID){
+        if(!sectionName || !courseId){
             return res.status(400).json({
                 success:false,
                 message:'Missing properties',

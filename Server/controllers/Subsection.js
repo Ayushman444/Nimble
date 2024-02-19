@@ -35,6 +35,10 @@ exports.createSubsection = async (req, res) => {
     ).populate("subSection");
     console.log(updatedSection);
     //return response
+    return res.status(200).json({
+      success:true,
+      message:"Subsection Created SuccessFully",
+    })
   } catch (e) {
     return res.status(500).json({
       success: false,

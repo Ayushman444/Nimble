@@ -2,6 +2,8 @@ const Course = require("../models/Course");
 const Category = require("../models/Category");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const CourseProgress = require("../models/CourseProgress")
+const { convertSecondsToDuration } = require("../utils/secToDuration")
 
 //create course handler function
 exports.createCourse = async (req, res) => {
@@ -160,7 +162,7 @@ exports.getCourseDetails = async (req, res) => {
         path: "courseContent",
         populate: {
           path: "subSection",
-          select: "-videoUrl", //exclude the url
+          // select: "-videoUrl", //exclude the url
         },
       })
       .exec();
@@ -172,7 +174,7 @@ exports.getCourseDetails = async (req, res) => {
       });
     }
 
-    //calculating the complete duration of course by iterating each subsection
+    // calculating the complete duration of course by iterating each subsection
     let totalDurationInSeconds = 0;
     courseDetails.courseContent.forEach((content) => {
       content.subSection.forEach((subSection) => {
@@ -182,6 +184,8 @@ exports.getCourseDetails = async (req, res) => {
     });
 
     const totalDuration = convertSecondsToDuration(totalDurationInSeconds);
+    // const totalDuration = 0;
+
 
     return res.status(200).json({
       success: true,
