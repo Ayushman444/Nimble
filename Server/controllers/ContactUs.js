@@ -12,7 +12,7 @@ exports.contactUsController = async (req, res) => {
       contactUsEmail(email, firstName, lastName, message, phoneNo, countryCode)
     );
     await mailSender(
-      "abhikantkumar8294026755@gmail.com",
+      "ayushman5022@gmail.com",
       "Someone Send this data to you",
       contactUsEmail(email, firstName, lastName, message, phoneNo, countryCode)
     );
