@@ -9,7 +9,6 @@ import IconBtn from "../../common/IconBtn"
 
 
 export default function CourseReviewModal({ setReviewModal }){
-
   const { user } = useSelector((state) => state.profile)
   const { token } = useSelector((state) => state.auth)
   const { courseEntireData } = useSelector((state) => state.viewCourse)
@@ -88,7 +87,5 @@ export default function CourseReviewModal({ setReviewModal }){
         </div>
 
       </div>
-    </div>
-
-  
+    </div>  
 )}
