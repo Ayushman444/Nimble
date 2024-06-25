@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "./App.css";
-import { useDispatch, useSelector } from "react-redux"; 
-import { Route, Routes, useNavigate } from "react-router-dom"; 
+import { useDispatch, useSelector } from "react-redux";
+import { Route, Routes, useNavigate } from "react-router-dom";
 
 // Components
 import Navbar from "./components/common/Navbar";
@@ -47,7 +47,7 @@ function App() {
 
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
-      <Navbar /> {/* navbar is common in all pages */}
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="catalog/:catalogName" element={<Catalog />} />
