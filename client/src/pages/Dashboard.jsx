@@ -1,24 +1,20 @@
-import { useSelector } from "react-redux"
-import { Outlet } from "react-router-dom"
-import Sidebar from "../components/core/Dashboard/Sidebar"
-
-
+import { useSelector } from "react-redux";
+import { Outlet } from "react-router-dom";
+import Sidebar from "../components/core/Dashboard/Sidebar";
 
 function Dashboard() {
+  const { loading: profileLoading } = useSelector((state) => state.profile);
+  const { loading: authLoading } = useSelector((state) => state.auth);
 
-  const { loading: profileLoading } = useSelector((state) => state.profile)
-  const { loading: authLoading } = useSelector((state) => state.auth)
-
-  if(profileLoading || authLoading){
+  if (profileLoading || authLoading) {
     return (
       <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
         <div className="spinner"></div>
       </div>
-    )
+    );
   }
 
   return (
-
     <div className="relative flex min-h-[calc(100vh-3.5rem)]">
       <Sidebar />
       <div className="h-[calc(100vh-3.5rem)] flex-1 overflow-auto">
@@ -27,8 +23,7 @@ function Dashboard() {
         </div>
       </div>
     </div>
-  
-)}
+  );
+}
 
-
-export default Dashboard
+export default Dashboard;
