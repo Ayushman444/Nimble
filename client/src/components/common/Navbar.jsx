@@ -3,7 +3,7 @@ import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai"
 import { BsChevronDown } from "react-icons/bs"
 import { useSelector } from "react-redux"
 import { Link, matchPath, useLocation } from "react-router-dom"
-import logo from "../../assets/Logo/Logo-Full-Light.png"
+import logo from "../../assets/Logo/NimblekaLogo.png"
 import { NavbarLinks } from "../../data/navbar-links"
 import { apiConnector } from "../../services/apiconnector"
 import { categories } from "../../services/apis"
@@ -48,7 +48,7 @@ function Navbar() {
          
       <div className="flex w-11/12 max-w-maxContent items-center justify-between">
         
-        <Link to="/"> <img src = {logo} alt="Logo" width = {160} height = {32} loading = "lazy"/> </Link>           {/* Logo */}
+        <Link to="/"> <img src = {logo} alt="Logo" width = {120} height = {24} loading = "lazy"/> </Link>           {/* Logo */}
 
         <nav className="hidden md:block">                                                                    {/* Navigation links */}
           <ul className="flex gap-x-6 text-richblack-25">

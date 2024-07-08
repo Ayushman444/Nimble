@@ -9,7 +9,7 @@ import { contactusEndpoint } from "../../services/apis"
 const ContactUsForm = () => {
 
   const { register, handleSubmit, reset, formState: { errors, isSubmitSuccessful }, } = useForm()              //  useform is used to collect data of input box in object form (read from internet) 
-     
+  const [loading, setLoading] = useState(false);
    
   const submitContactForm = async (data) => {   
     const toastId = toast.loading("Loading...")
