@@ -10,7 +10,7 @@ import Footer from "../components/common/Footer";
 import RatingStars from "../components/common/RatingStars";
 import CourseAccordionBar from "../components/core/Course/CourseAccordionBar";
 import CourseDetailsCard from "../components/core/Course/CourseDetailsCard";
-import { formatDate } from "../services/formatDate";
+import { formatDate } from "../services/formateDate";
 import { fetchCourseDetails } from "../services/operations/courseDetailsAPI";
 import { buyCourse } from "../services/operations/studentFeaturesAPI";
 import GetAvgRating from "../utils/avgRating";
