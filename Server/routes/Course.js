@@ -30,7 +30,6 @@ router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses)   
 router.delete("/deleteCourse", deleteCourse)                                            // Delete a Course
 router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 
-
 // category routes(only by admin)
 router.post("/createCategory", auth, isAdmin, createCategory)
 router.get("/showAllCategories", showAllCategories)
